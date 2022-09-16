@@ -1,0 +1,27 @@
+.white_box {
+    background-color: #fff;
+    border-radius: 4px;
+    cursor: default;
+}
+.white_box:hover {
+    box-shadow: 0 0 6px 2px #00000030;
+}
+.sub_card_box {
+    border: 1px solid #bfbfbf;
+}
+.old_font {
+    color: #BFBFBF49;
+    cursor: context-menu;
+}
+.font_title {
+    font-size: 20px;
+    font-weight: 400;
+}
+.font_desc {
+    font-size: 15px;
+    font-weight: 300;
+}
+.font_comm {
+    font-size: 12px;
+    font-weight: 200;
+}

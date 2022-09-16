@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>edge Modbus</title>
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="https://motionserver.dyndns.org:54951/d/s/qLw34TX6k3ipFOeDmjJK4hnNWltFrlr1/webapi/entry.cgi/dataEdgeIcon.png?api=SYNO.SynologyDrive.Files&method=download&version=2&files=%5B%22id%3A708718070771790152%22%5D&force_download=false&sharing_token=%22fvZkTNnrBnwRXpjBnPW0yaTl3qMusPhKBXF71Qa.WQil3wBbNNZpXaPc8RUhbomdjAHyvufylgkfgyZWGwHCzK8hEMxdIK_3M7KPX86vmowVUAzo_c.SQfqF1L_1GVbORg1UjU_yDdP1vpOcpq_eVrWbsRlOYLOzK_yzcmuSBQDnVIplkA8OR94Up0.juNOQoTpmyb2YfFb6.OUU3kUt13oR4FAm_FX7s6RlLujw6aijYSxNBT.1KkMA%22&_dc=1663319167145">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.9.96/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="index.css">
+
+</head>
+
+<body class="row p-0 m-0 align-items-center justify-content-center " style="background-color: #F1F3F5;">
+
+    <div class="col-12 row p-0 m-0 justify-content-end">
+        <button id="apiClear" type="button" class="col-auto p-1 m-1 px-2 btn btn-sm btn-dark waves-effect" data-toggle="modal" data-target="#configModal">
+            <i class="mdi mdi-cog "></i>
+        </button>
+    </div>
+
+    <h1>edgeOne Modbus system</h1>
+
+    <div class="col-12 row p-2 m-2 " >
+        <div class="col-12 row p-0 m-0 justify-content-center " >
+            <div class="col-2 row p-2 m-0 " >
+                <div class="col-12 row p-0 m-0 align-items-center justify-content-center white_box " >
+                    <div id="dev_name" class="col-auto temp_font font_title " >device name</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 row p-0 m-0" id="mach_sub_devices" >
+            <!-- <div class="col-12 row p-0 m-0 sub_card_box " >
+                <div class="col-2 row p-2 m-0 " >
+                    <div class="col-12 row p-0 m-0 align-items-center justify-content-center white_box " >
+                        <div id="dev_sub_name" class="col-auto temp_font font_title " >dev sub name</div>
+                    </div>
+                </div>
+                <div class="col-12 row p-2 m-0 justify-content-around " id="mach_sub_chart" >
+                    <div class="col-2 row p-2 m-0 align-items-center justify-content-center " >
+                        <div id="dev_sub_value" class="col-12 temp_font font_title white_box text-center p-5 " >0</div>
+                        <div id="dev_sub_type" class="col-12 temp_font font_title white_box text-center " >dev sub type</div>
+                    </div>
+                    <div class="col-9 row p-2 m-0 " >
+                        <div class="col-12 row p-0 m-0 white_box " >
+                            <canvas id="chart_line" height="50" ></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="configModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">System Config</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body ">
+                    <div class="row p-0 m-0">
+                        <div class="col row p-0 m-0 mt-0 align-items-center justify-content-between ">
+                            <small class="col-12 p-0 m-0 pr-1 text-right text-danger " id="wrong_apiURL" >*Insert an API URL</small>
+                            <label class="col-auto p-0 m-0 pr-2 " for="apiURL">API URL : </label>
+                            <input class="col-10 p-0 m-0 pl-1" id="apiURL" type="text" placeholder='eg. "https://edgecloudapi.dynamics-motion.com/data"' value="https://edgecloudapi.dynamics-motion.com/data">
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col row p-0 m-0 mt-2 align-items-center justify-content-between ">
+                            <small class="col-12 p-0 m-0 pr-1 text-right text-danger " id="wrong_publicKey" >*Insert a Public Key</small>
+                            <label class="col-auto p-0 m-0 pr-2 " for="publicKey">Public Key : </label>
+                            <input class="col-10 p-0 m-0 pl-1" id="publicKey" type="text" placeholder='eg. "xxxxxx"' value="">
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col row p-0 m-0 mt-2 align-items-center justify-content-between ">
+                            <small class="col-12 p-0 m-0 pr-1 text-right text-danger " id="wrong_privateKey" >*Insert a Private Key</small>
+                            <label class="col-auto p-0 m-0 pr-2 " for="privateKey">Private Key : </label>
+                            <input class="col-10 p-0 m-0 pl-1" id="privateKey" type="text" placeholder='eg. "xxxxxx"' value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="api_start" type="button" class="btn btn-primary">Start</button>
+                    <button id="api_stop" typ="button" class="btn btn-secondary" disabled>Stop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <!-- Index JS -->
+    <script src="index.js"></script>
+</body>
+
+</html>
