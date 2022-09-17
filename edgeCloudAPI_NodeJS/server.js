@@ -165,9 +165,6 @@ async function get_one( info, token, dev_serial ) {
                     sub_max_speed_unit
                     task_needed
                     task_id
-                    task_created
-                    task_updated
-                    task_deleted
                     task_name
                     task_state
                     task_sub_id
