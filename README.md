@@ -13,8 +13,6 @@ Please come to Plug-in-App page and enalble on of each edgeOne that you want to 
 ![Screen Shot 2565-09-16 at 14 49 38](https://user-images.githubusercontent.com/83510659/190585730-615121e0-f840-4818-958b-cf83c73b7e17.png)
 
 
-
-
 API Key
 
 ![Screen Shot 2565-09-16 at 14 51 06](https://user-images.githubusercontent.com/83510659/190585965-730da08b-bd1a-4b8a-b6e6-f6d43b1fcd09.png)
@@ -22,6 +20,13 @@ API Key
 ![Screen Shot 2565-09-16 at 14 53 48](https://user-images.githubusercontent.com/83510659/190586547-211a53dc-0760-4fa2-a7e9-d93296294ee7.png)
 
 ![Screen Shot 2565-09-16 at 14 45 30](https://user-images.githubusercontent.com/83510659/190584947-e17ee88b-d98a-41ea-906b-a998b29a7096.png)
+
+
+Student3
+<PUB>
+b4e0bcba2c44f24ab8f231f7a1305287037a7273769dbb3631ba3399184153116d51a8e28059e4853a3dc0a1e069191b25c05a39e1068ed8ffb9b83a02179239
+<PRI>
+b4e0bcba2c44f24ab8f231f7a1305287037a7273769dbb3631ba3399184153116d51a8e28059e4853a3dc0a1e069191b25c05a39e1068ed8ffb9b83a02179239
 
 
 
