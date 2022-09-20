@@ -29,6 +29,7 @@ $(async()=>{
         const apiURL =   $("#apiURL").val()
         const publicKey =   $("#publicKey").val()
         const privateKey =   $("#privateKey").val()
+        const serialNumber =   $("#serialNumber").val()
 
         if( !apiURL || !publicKey || !privateKey ) {
             if(!apiURL) $("#wrong_apiURL").show()
@@ -37,7 +38,7 @@ $(async()=>{
         }
         else {
             run_API = true
-            start_system_API(apiURL, publicKey, privateKey)
+            start_system_API(apiURL, publicKey, privateKey, serialNumber)
 
         }
 
@@ -47,7 +48,7 @@ $(async()=>{
 
 
     var data_API = []
-    async function start_system_API(apiURL, publicKey, privateKey) {
+    async function start_system_API(apiURL, publicKey, privateKey, serialNumber) {
         const nowTime = (new Date()).getTime()
         const global = {
             api_URL: apiURL,
@@ -80,11 +81,11 @@ $(async()=>{
         if(run_API) {
 
             data_API.push(data_device)
-            await update_web(data_device)
+            await update_web(data_device, serialNumber)
 
 
             setTimeout(() => {
-                start_system_API(apiURL, publicKey, privateKey)
+                start_system_API(apiURL, publicKey, privateKey, serialNumber)
             }, 5000);
         }
         else {
@@ -238,15 +239,42 @@ $(async()=>{
 
     var html_dev = []
     var chart_line = []
+    var chart_line_option = {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: `Sensor value in __`,
+                data: [],
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.3
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    ticks: {
+                        maxTicksLimit: 17
+                    }
+                }
+            }
+        }
+    }
 
 
     // ---------------------- Update graphs in web-page ---------------------- //
-    async function update_web(info=false) {
+    async function update_web(info=false, serialNo=false) {
         let not_system = true
         if(info) {
 
             let data = []
-            data[0] = await info.find(e => e.sub_type[0]=='energy' )
+            if( serialNo && serialNo!='' ) {
+                data[0] = await info.find(e => e.sub_type[0]=='energy' && e.serial_number==serialNo )
+            }
+            else {
+                data[0] = await info.find(e => e.sub_type[0]=='energy' )
+            }
 
             if(data.length ) {
                 not_system = false
@@ -299,28 +327,8 @@ $(async()=>{
                         `
                         await $("#mach_sub_devices").append(HTML_mach_sub_devices)
                         chart_line[temp_i_new] = []
-                        chart_line[temp_i_new][0] = await new Chart(document.getElementById(`chart_line_${temp_i_new}_0`).getContext("2d"), {
-                            type: 'line',
-                            data: {
-                                labels: [],
-                                datasets: [{
-                                    label: `Sensor value in ${sub_unit}`,
-                                    data: [],
-                                    fill: false,
-                                    borderColor: 'rgb(75, 192, 192)',
-                                    tension: 0.3
-                                }]
-                            },
-                            options: {
-                                scales: {
-                                    x: {
-                                        ticks: {
-                                            maxTicksLimit: 17
-                                        }
-                                    }
-                                }
-                            }
-                        })
+                        const temp_option = JSON.parse(JSON.stringify(chart_line_option))
+                        chart_line[temp_i_new][0] = await new Chart(document.getElementById(`chart_line_${temp_i_new}_0`).getContext("2d"), temp_option)
 
                         $(`#dev_sub_name_${temp_i_new}`).text(sub_name)
                         $(`#dev_sub_type_${temp_i_new}_0`).text(sub_type)
@@ -355,28 +363,8 @@ $(async()=>{
                             </div>
                             `
                             await $(`#mach_sub_chart_${temp_i}`).append(HTML_mach_sub_chart)
-                            chart_line[temp_i][temp_sub_i_new] = await new Chart(document.getElementById(`chart_line_${temp_i}_${temp_sub_i_new}`).getContext("2d"), {
-                                type: 'line',
-                                data: {
-                                    labels: [],
-                                    datasets: [{
-                                        label: `Sensor value in ${sub_unit}`,
-                                        data: [],
-                                        fill: false,
-                                        borderColor: 'rgb(75, 192, 192)',
-                                        tension: 0.3
-                                    }]
-                                },
-                                options: {
-                                    scales: {
-                                        x: {
-                                            ticks: {
-                                                maxTicksLimit: 17
-                                            }
-                                        }
-                                    }
-                                }
-                            })
+                            const temp_option = JSON.parse(JSON.stringify(chart_line_option))
+                            chart_line[temp_i][temp_sub_i_new] = await new Chart(document.getElementById(`chart_line_${temp_i}_${temp_sub_i_new}`).getContext("2d"), temp_option)
 
                             $(`#dev_sub_type_${temp_i}_${temp_sub_i_new}`).text(sub_type)
                             $(`#dev_sub_value_${temp_i}_${temp_sub_i_new}`).text(sub_value +' '+ sub_unit)

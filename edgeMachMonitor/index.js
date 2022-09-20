@@ -29,6 +29,7 @@ $(async()=>{
         const apiURL =   $("#apiURL").val()
         const publicKey =   $("#publicKey").val()
         const privateKey =   $("#privateKey").val()
+        const serialNumber =   $("#serialNumber").val()
 
         if( !apiURL || !publicKey || !privateKey ) {
             if(!apiURL) $("#wrong_apiURL").show()
@@ -37,7 +38,7 @@ $(async()=>{
         }
         else {
             run_API = true
-            start_system_API(apiURL, publicKey, privateKey)
+            start_system_API(apiURL, publicKey, privateKey, serialNumber)
         }
 
         $("#api_start").prop('disabled', true)
@@ -46,7 +47,7 @@ $(async()=>{
 
 
     var data_API = []
-    async function start_system_API(apiURL, publicKey, privateKey) {
+    async function start_system_API(apiURL, publicKey, privateKey, serialNumber) {
         const nowTime = (new Date()).getTime()
         const global = {
             api_URL: apiURL,
@@ -79,11 +80,11 @@ $(async()=>{
         if(run_API) {
 
             data_API.push(data_device)
-            await update_web(data_device)
+            await update_web(data_device, serialNumber)
 
 
             setTimeout(() => {
-                start_system_API(apiURL, publicKey, privateKey)
+                start_system_API(apiURL, publicKey, privateKey, serialNumber)
             }, 5000);
         }
         else {
@@ -304,12 +305,17 @@ $(async()=>{
 
 
     // ---------------------- Update graphs in web-page ---------------------- //
-    async function update_web(info=false) {
+    async function update_web(info=false, serialNo=false) {
         let not_system = true
         if(info) {
 
             let data = []
-            data[0] = info.find(e => e.sub_type[0]=='counter' )
+            if( serialNo && serialNo!='' ) {
+                data[0] = await info.find(e => e.sub_type[0]=='counter' && e.serial_number==serialNo )
+            }
+            else {
+                data[0] = await info.find(e => e.sub_type[0]=='counter' )
+            }
 
             if(data.length ) {
                 not_system = false
