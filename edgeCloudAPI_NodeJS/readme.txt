@@ -5,6 +5,6 @@ Config your keys:
 2) Insert your public and priate keys
 
 Start system :
-1) open terminal in current location
-2) run "npm install" to install all packages for the system
-3) then run "node server.js" to start the system
+1) open terminal in current folder location
+2) then type in terminal "npm install" to install all NodeJs packages for the system
+3) lastly type in terminal "node server.js" to run the system
